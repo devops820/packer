@@ -38,6 +38,7 @@
             "type": "shell",
             "inline": [
                 "sudo apt-get install python3-pip -y",
+                "pip3 install --upgrade pip",
                 "pip3 install testinfra",
                 "python3 -m pytest -v /tmp/test_infra.py --junit-xml junit.xml"
             ]
