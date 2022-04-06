@@ -5,6 +5,14 @@ pipeline {
         AWS_SECRET_KEY=credentials('aws_secret_access_key')
     }
     stages {
+        stage('Install required ansible deps') {
+            steps {
+                sh """
+                cd introduction/building_a_pipeline_for_pckr_image
+                ansible-galaxy install -r requirements.yml
+                """
+            }
+        }
         stage('Packer Validate') {
             steps {
                 sh """
