@@ -1,0 +1,59 @@
+{   "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_KEY`}}"
+    },
+    "builders": [{
+        "type":"amazon-ebs",
+        "source_ami_filter": {
+            "owners": ["self"],
+            "most_recent": true,
+            "filters": {
+                "virtualization-type": "hvm",
+                "root-device-type": "ebs",
+                "name": "dev-sec-hardened*"
+            }
+        },
+        "region": "us-west-1",
+        "ami_regions": ["us-west-1"],
+        "tags": {
+            "image": "base dev-sec hardened ubuntu",
+            "tools": "jenkins"
+        },
+        "instance_type": "t2.micro",
+        "ssh_username": "ubuntu",
+        "ami_name": "jenkins-server-{{timestamp}}"
+    }],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "./playbooks/jenkins_playbook.yml",
+            "extra_arguments": ["--extra-vars","ansible_python_interpreter=/usr/bin/python3"]
+        },
+        {
+            "type": "file",
+            "source": "test_infra.py",
+            "destination": "/tmp/test_infra.py"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "sudo apt-get install python3-pip -y",
+                "pip3 install testinfra",
+                "python3 -m pytest -v /tmp/test_infra.py --junit-xml junit.xml"
+            ]
+        },
+        {
+            "type": "file",
+            "source": "junit.xml",
+            "destination": "junit.xml",
+            "direction": "download"
+        }
+    ],
+    "post-processors":[
+        {
+            "type": "manifest",
+            "output": "manifest.json",
+            "strip_path": true
+        }
+    ]
+}

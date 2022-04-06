@@ -1,0 +1,30 @@
+{   
+    "builders": [{
+        "type":"amazon-ebs",
+        "source_ami_filter": {
+            "owners": ["self"],
+            "most_recent": true,
+            "filters": {
+                "virtualization-type": "hvm",
+                "root-device-type": "ebs",
+                "name": "dev-sec-hardened*"
+            }
+        },
+        "region": "us-west-1",
+        "ami_regions": ["us-west-1"],
+        "tags": {
+            "image": "base dev-sec hardened ubuntu",
+            "tools": "jenkins"
+        },
+        "instance_type": "t2.micro",
+        "ssh_username": "ubuntu",
+        "ami_name": "jenkins-server-{{timestamp}}"
+    }],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "./playbooks/jenkins_playbook.yml",
+            "extra_arguments": ["--extra-vars","ansible_python_interpreter=/usr/bin/python3"]
+        }
+    ]
+}

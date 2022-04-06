@@ -1,0 +1,10 @@
+mysql_root_password: y2fe1sfkdsf1sdfd
+mysql_databases:
+  - name: packer_db
+    encoding: latin1
+    collation: latin1_general_ci
+mysql_users:
+  - name: packer_user
+    host: "%"
+    password: x2fe1sfkdsf12k1nsdf
+    priv: "packer_db.*:ALL"

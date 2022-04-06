@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    environment {
+        AWS_ACCESS_KEY=credentials('aws_access_key_id')
+        AWS_SECRET_KEY=credentials('aws_secret_access_key')
+    }
+    stages {
+        stage('Packer Validate') {
+            steps {
+                sh """
+                cd introduction/building_a_pipeline_for_pckr_image
+                packer validate 1.jenkins_packer_ci_pipeline.json
+                """
+            }
+        }
+        stage('Packer Build') {
+            steps {
+                sh """
+                cd introduction/building_a_pipeline_for_pckr_image
+                packer build 1.jenkins_packer_ci_pipeline.json
+                """
+            }
+        }
+    }
+}

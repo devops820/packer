@@ -1,0 +1,7 @@
+- src: dev-sec.os-hardening
+- src: dev-sec.ssh-hardening
+- src: geerlingguy.jenkins
+- src: geerlingguy.ansible
+- src: geerlingguy.packer
+- src: geerlingguy.java
+- src: dev-sec.mysql-hardening

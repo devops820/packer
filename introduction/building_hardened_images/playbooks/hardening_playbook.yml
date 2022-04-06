@@ -1,0 +1,9 @@
+---
+- name: hardening playbook
+  hosts: all
+  become: true
+  roles:
+   - role: dev-sec.os-hardening
+   - role: dev-sec.ssh-hardening
+  vars:
+   ssh_use_pam: true # to allow access with our key on ec2
