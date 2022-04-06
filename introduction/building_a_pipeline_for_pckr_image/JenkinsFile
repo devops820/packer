@@ -9,7 +9,7 @@ pipeline {
             steps {
                 sh """
                 cd introduction/building_a_pipeline_for_pckr_image
-                ansible-galaxy install -y requirements.yml
+                ansible-galaxy install -r requirements.yml
                 """
             }
         }
