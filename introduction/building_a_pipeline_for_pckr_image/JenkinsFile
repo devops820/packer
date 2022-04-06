@@ -9,7 +9,7 @@ pipeline {
             steps {
                 sh """
                 cd introduction/building_a_pipeline_for_pckr_image
-                ansible-galaxy install -r requirements.yml
+                ansible-galaxy install -y requirements.yml
                 """
             }
         }
@@ -28,6 +28,12 @@ pipeline {
                 packer build 1.jenkins_packer_ci_pipeline.json
                 """
             }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'manifest.json', fingerprint: true
+            junit 'junit.xml'
         }
     }
 }
