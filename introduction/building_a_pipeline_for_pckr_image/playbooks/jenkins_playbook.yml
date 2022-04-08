@@ -2,19 +2,13 @@
 - name: jenkins playbook
   hosts: all
   become: true
-  vars:
-   ssh_use_pam: true
-   jenkins_hostname: localhost
-   jenkins_admin_username: smarlakunta
-   jenkins_admin_password: x2fe1sfkdsf12k1nsdf
-   ansible_remote_tmp: /tmp/ansible
-   jenkins_plugins: [ansicolor]
-   java_packages:
-      - openjdk-8-jdk
+  vars_files:
+   - ["vars/{{ ansible_facts['os_family'] }}.yml","vars/defaults.yml"]
+
   roles:
    - role: geerlingguy.java
    - role: geerlingguy.jenkins
    # this installs packer and ansible on the jenkins server so that you could run ansible & packer from jenkins itself
    # rather than from localhost.
-   - role: geerlingguy.ansible
+  #  - role: geerlingguy.ansible
    - role: geerlingguy.packer

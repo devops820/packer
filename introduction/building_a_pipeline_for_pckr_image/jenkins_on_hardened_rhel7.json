@@ -1,6 +1,8 @@
-{   "variables": {
-    "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
-    "aws_secret_key": "{{env `AWS_SECRET_KEY`}}"
+{   
+    "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "aws_session_token": "{{env `AWS_SESSION_TOKEN` }}"
     },
     "builders": [{
         "type":"amazon-ebs",
@@ -10,24 +12,24 @@
             "filters": {
                 "virtualization-type": "hvm",
                 "root-device-type": "ebs",
-                "name": "dev-sec-hardened*"
+                "name": "rhel7-dev-sec-hardened-*"
             }
         },
         "region": "us-west-1",
         "ami_regions": ["us-west-1"],
         "tags": {
-            "image": "base dev-sec hardened ubuntu",
-            "tools": "jenkins"
+            "base_ami_name": "rhel7-dev-sec-hardened-1649418102",
+            "base_ami": "ami-0e9b9b759fd8f43ec ",
+            "tools_installed": "jenkins"
         },
         "instance_type": "t2.micro",
-        "ssh_username": "ubuntu",
+        "ssh_username": "ec2-user",
         "ami_name": "jenkins-server-{{timestamp}}"
     }],
     "provisioners": [
         {
             "type": "ansible",
-            "playbook_file": "./playbooks/jenkins_playbook.yml",
-            "extra_arguments": ["--extra-vars","ansible_python_interpreter=/usr/bin/python3"]
+            "playbook_file": "./playbooks/jenkins_playbook.yml"
         },
         {
             "type": "file",

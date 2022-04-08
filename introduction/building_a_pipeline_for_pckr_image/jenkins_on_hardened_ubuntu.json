@@ -1,0 +1,48 @@
+{   
+    "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "aws_session_token": "{{env `AWS_SESSION_TOKEN` }}"
+    },
+    "builders": [{
+        "type":"amazon-ebs",
+        "source_ami_filter": {
+            "owners": ["self"],
+            "most_recent": true,
+            "filters": {
+                "virtualization-type": "hvm",
+                "root-device-type": "ebs",
+                "name": "dev-sec-hardened-*"
+            }
+        },
+        "region": "us-west-1",
+        "ami_regions": ["us-west-1"],
+        "tags": {
+            "image": "dev-sec-hardened-1649397455",
+            "ami": "ami-0d70a2a710ce63ad9",
+            "tools": "jenkins"
+        },
+        "instance_type": "t2.micro",
+        "ssh_username": "ubuntu",
+        "ami_name": "jenkins-server-{{timestamp}}"
+    }],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "./playbooks/jenkins_playbook.yml",
+            "extra_arguments": ["--extra-vars","ansible_python_interpreter=/usr/bin/python3"]
+        },
+        {
+            "type": "file",
+            "source": "test_infra.py",
+            "destination": "/tmp/test_infra.py"
+        }
+    ],
+    "post-processors":[
+        {
+            "type": "manifest",
+            "output": "manifest.json",
+            "strip_path": true
+        }
+    ]
+}

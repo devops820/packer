@@ -44,7 +44,7 @@ nginx instance
 aws ec2 run-instances --instance-type t2.micro --count 1 --key-name SaiKeyPair --image ami-071ecaa89f58cc95b
 
 aws ec2 describe-instances --filters "Name=image-id,Values=ami-071ecaa89f58cc95b"
-aws ec2 terminate-instances --instance-ids i-01cfd5227f919c5e4
+aws ec2 terminate-instances --instance-ids i-041b0130359567e62
 aws ec2 terminate-instances --instance-ids i-0d3883942127c4491
 ```
 
@@ -58,10 +58,15 @@ Add the following ingress rules so that you can ssh into the ec2 machine
 ```
 Get the security group information from the following query
 
-aws ec2 describe-security-groups --group-ids sg-0c047509b36299d77
+aws ec2 describe-security-groups --group-ids sg-039ffb3bdf3d644fe
 
 Inbound rules
 
-aws ec2 authorize-security-group-ingress --group-id sg-0c047509b36299d77 --protocol tcp --port 80 --cidr 49.37.152.248/32
-aws ec2 authorize-security-group-ingress --group-id sg-0c047509b36299d77 --protocol tcp --port 22 --cidr 49.37.152.248/32
+aws ec2 authorize-security-group-ingress --group-id sg-039ffb3bdf3d644fe --protocol tcp --port 8080 --cidr 49.37.154.27/32
+aws ec2 authorize-security-group-ingress --group-id sg-039ffb3bdf3d644fe --protocol tcp --port 22 --cidr 49.37.154.27/32
 ```  
+
+
+aws ec2 deregister-image --image-id ami-026a5c99e7895e5f0
+
+aws ec2 deregister-image --image-id ami-05739ed1c6fe6080

@@ -1,0 +1,7 @@
+---
+ssh_use_pam: true
+jenkins_hostname: localhost
+jenkins_admin_username: smarlakunta
+jenkins_admin_password: x2fe1sfkdsf12k1nsdf
+ansible_remote_tmp: /tmp/ansible
+jenkins_plugins: [ansicolor]
